@@ -74,7 +74,7 @@ namespace IlkMvcSayfam.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update(int? id)
+        public ActionResult Guncelle(int? id)
         {
             var db = new NorthwindSabahEntities();
             try
@@ -92,11 +92,11 @@ namespace IlkMvcSayfam.Controllers
             {
                 return RedirectToAction("Index", "Employee");
             }
-        } 
+        }
 
 
         [HttpPost]
-        public ActionResult Update(Employee employee)
+        public ActionResult Guncelle(Employee employee)
         {
             try
             {
@@ -107,6 +107,9 @@ namespace IlkMvcSayfam.Controllers
 
                 if (guncel == null)
                     return RedirectToAction("Index");
+
+                if (employee.HireDate == null)
+                    employee.HireDate = DateTime.Now;
 
                 guncel.FirstName = employee.FirstName;
                 guncel.LastName = employee.LastName;
