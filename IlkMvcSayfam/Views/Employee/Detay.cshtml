@@ -1,0 +1,23 @@
+﻿@model Employee
+@{
+	ViewBag.Title = "Detay";
+}
+
+<h2>@Model.FirstName @Model.LastName Detay Sayfası</h2>
+<h4>@Model.HireDate.Value.ToShortDateString()</h4>
+
+@if (Model.ReportsTo != null)
+{
+	var data = new NorthwindSabahEntities()
+		.Employees
+		.Find(Model.ReportsTo);
+	<h4>@data.FirstName @data.LastName kişisine rapor veriyor</h4>
+}
+@if(Model.ReportsTo == null)
+{
+		<h4>@Model.FirstName @Model.LastName kişisi patron</h4>
+}
+
+
+
+
