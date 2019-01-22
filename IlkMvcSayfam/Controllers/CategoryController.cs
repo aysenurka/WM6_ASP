@@ -60,7 +60,50 @@ namespace IlkMvcSayfam.Controllers
             }
             return RedirectToAction("Index");
         }
+        [HttpGet]
+        public ActionResult Update(int? id) {
+            if (id == null)
+                return RedirectToAction("Index","Category"); // boş bırakırsam bulunduğu indexe gider home veya cat verebilirim
+            try
+            {
+                var data = new NorthwindSabahEntities().Categories.Find(id.Value);
+                if (data == null)
+                    return RedirectToAction("Index", "Category");
 
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index", "Category"); // sayfaya yönlendiriyorum
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Update(Category model) {
+            try
+            {
+                var db = new NorthwindSabahEntities();
+                var data = db.Categories.Find(model.CategoryID);
+
+                if (data == null)
+                    return RedirectToAction("Index");
+
+                data.CategoryName = model.CategoryName;
+                data.Description = model.Description;
+                db.SaveChanges();
+                ViewBag.Message= "<span class='text text-success'>Update Successfully</span>";
+                return View(data); // güncellediğim data
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message= $"<span class='text text-danger'>Update Error {ex.Message}</span>";
+                return View(model); // güncelleyemediğim
+            }
+        }
+        //viewbag
+        //viewdata
+        //routedata
+        //tempdata
         public JsonResult Categories()
         {
             var categoriler = new NorthwindSabahEntities().Categories.Select(x => new
