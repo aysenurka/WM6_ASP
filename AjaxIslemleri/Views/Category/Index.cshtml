@@ -7,7 +7,7 @@
 	<br /><br />
 	<div class="row">
 		<div class="col-md-10 col-md-offset-1">
-			<form class="form-inline">
+			<form class="form-inline" id="frmAdd">
 				<div class="form-group">
 					<label for="txtCategoryName">Category Name</label>
 					<input type="text" class="form-control" id="txtCategoryName" placeholder="Category Name">
@@ -79,7 +79,22 @@
 
 @section scripts{
 	<script>
-		$(function () {
+		$(function() {
+			$("#frmAdd").submit(function() {
+				console.log("submit oldu" + $("#txtCategoryName").val());
+				var data = {
+					CategoryName: $("#txtCategoryName").val(),
+					Description: $("#txtDescription").val()
+				}
+				$.ajax({
+					url: '@Url.Action("Add","Category")',
+					method: "post",
+					dataType: "json",
+					data: data
+				}).done(function(e) {
+					alert(e.message);
+				});
+			});
 			$("#resultdiv").hide();
 			$("#txtsearch").keyup(function(e) {
 				$("#resultmessage").hide();
@@ -108,10 +123,11 @@
 					//console.log(e);
 				});
 			});
+
 			function renderdata(data) {
 				$("#resultbody").empty();
 				$.each(data,
-					function(key,value) {
+					function(key, value) {
 						var tr = document.createElement("tr");
 						var th = document.createElement("th");
 						th.innerText = key + 1;
@@ -123,7 +139,8 @@
 						td3.innerText = value.ProductCount;
 						var td4 = document.createElement("td");
 						var a = document.createElement("a");
-						$(a).attr("href", "@Url.Action("Detail", "Category")" + "/" + value.CategoryID).attr("class", "btn btn-success").html("Detail");
+						$(a).attr("href", "@Url.Action("Detail", "Category")" + "/" + value.CategoryID)
+							.attr("class", "btn btn-success").html("Detail");
 
 						$(a).appendTo(td4);
 

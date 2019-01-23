@@ -60,9 +60,34 @@ namespace AjaxIslemleri.Controllers
                     success = false
                 }, JsonRequestBehavior.AllowGet);
             }
+        }
 
-
-            return null;
+        [HttpPost]
+        public ActionResult Add(CategoryViewModel model)
+        {
+            try
+            {
+                var db=new NorthwindEntities();
+                db.Categories.Add(new Category()
+                {
+                    CategoryName = model.CategoryName,
+                    Description = model.Description
+                });
+                db.SaveChanges();
+                return Json(new ResponseData()
+                {
+                    message = $"{model.CategoryName} ismindeki kategori başarıyla eklendi",
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    message = $"bir hata olustu {ex.Message}",
+                    success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
