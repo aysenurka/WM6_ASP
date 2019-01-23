@@ -109,6 +109,7 @@
 					data: data
 				}).done(function(e) {
 					alert(e.message);
+					init();
 				});
 			});
 			$("#resultdiv").hide();
@@ -166,13 +167,12 @@
 							"name": value.CategoryID
 						}).on("click", function () {
 							var id = this.name;
-							$.ajax(
-								{
+							$.ajax({
 									url: "@Url.Action("Delete","Category")",
 									method: "post",
 									dataType: "json",
 									data: {id:id}
-								}).done(function(e) {
+							}).done(function(e) {
 									alert(e.message);
 									init();
 							});
