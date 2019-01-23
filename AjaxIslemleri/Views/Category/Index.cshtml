@@ -36,7 +36,7 @@
 		</div>
 	</div>
 	<div class="row" id="resultdiv">
-		<div class="col-md-6 col-md-offset-3">
+		<div class="col-md-10 col-md-offset-1">
 			<table class="table table-responsive table-striped">
 				<thead>
 					<tr>
@@ -44,34 +44,10 @@
 						<th>Category Name</th>
 						<th>Description</th>
 						<th>Product Count</th>
-						<th>Detail</th>
-						<th>Delete</th>
-						<th>Update</th>
+						<th>Action</th>
 					</tr>
 				</thead>
-				<tbody id="resultbody">
-					<tr>
-						<th>1</th>
-						<td>beverages</td>
-						<td>falan filan</td>
-						<td>0</td>
-						<td>
-							<a href="@Url.Action("Detail", "Category", new {id = 1})" class="btn btn-success">
-								Detail
-							</a>
-						</td>
-						<td>
-							<a href="@Url.Action("Delete", "Category", new {id = 1})" class="btn btn-danger">
-								Delete
-							</a>
-						</td>
-						<td>
-							<a href="@Url.Action("Update", "Category", new {id = 1})" class="btn btn-warning">
-								Update
-							</a>
-						</td>
-					</tr>
-				</tbody>
+				<tbody id="resultbody"></tbody>
 			</table>
 		</div>
 	</div>
