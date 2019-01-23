@@ -20,7 +20,7 @@ namespace AjaxIslemleri.Controllers
         public JsonResult Search(string s)
         {
             var key = s.ToLower();
-            if (key.Length <= 2)
+            if (key.Length <= 2 && key != "*")
             {
                 return Json(new ResponseData()
                 {
@@ -32,18 +32,35 @@ namespace AjaxIslemleri.Controllers
             try
             {
                 var db = new NorthwindEntities();
-                db.Configuration.LazyLoadingEnabled = false;
-                var data = db.Categories
-                    .Where(x =>
-                    x.CategoryName.ToLower().Contains(key) || x.Description.Contains(key))
-                    .Select(x=>new CategoryViewModel
-                    {
-                        CategoryName = x.CategoryName,
-                        Description = x.Description,
-                        CategoryID = x.CategoryID,
-                        ProductCount = x.Products.Count
-                    })
-                    .ToList();
+                List<CategoryViewModel> data;
+                if (key == "*")
+                {
+                    data = db.Categories
+                        .OrderBy(x => x.CategoryName)
+                        .Select(x => new CategoryViewModel
+                        {
+                            CategoryName = x.CategoryName,
+                            Description = x.Description,
+                            CategoryID = x.CategoryID,
+                            ProductCount = x.Products.Count
+                        }).ToList();
+                }
+                else
+                {
+                    //db.Configuration.LazyLoadingEnabled = false;
+                    data = db.Categories
+                        .Where(x =>
+                            x.CategoryName.ToLower().Contains(key) || x.Description.Contains(key))
+                        .Select(x => new CategoryViewModel
+                        {
+                            CategoryName = x.CategoryName,
+                            Description = x.Description,
+                            CategoryID = x.CategoryID,
+                            ProductCount = x.Products.Count
+                        })
+                        .ToList();
+                }
+               
 
                 return Json(new ResponseData()
                 {
@@ -67,7 +84,7 @@ namespace AjaxIslemleri.Controllers
         {
             try
             {
-                var db=new NorthwindEntities();
+                var db = new NorthwindEntities();
                 db.Categories.Add(new Category()
                 {
                     CategoryName = model.CategoryName,
@@ -77,6 +94,31 @@ namespace AjaxIslemleri.Controllers
                 return Json(new ResponseData()
                 {
                     message = $"{model.CategoryName} ismindeki kategori başarıyla eklendi",
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    message = $"bir hata olustu {ex.Message}",
+                    success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                var db=new NorthwindEntities();
+                var cat = db.Categories.Find(id);
+                db.Categories.Remove(cat);
+                db.SaveChanges();
+                return Json(new ResponseData()
+                {
+                    message = $"{cat.CategoryName} ismindeki kategori başarıyla silindi",
                     success = true
                 }, JsonRequestBehavior.AllowGet);
             }

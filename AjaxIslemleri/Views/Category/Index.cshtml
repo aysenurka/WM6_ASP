@@ -80,14 +80,30 @@
 @section scripts{
 	<script>
 		$(function() {
-			$("#frmAdd").submit(function() {
-				console.log("submit oldu" + $("#txtCategoryName").val());
+			function init() {
+				$.ajax({
+					url: "@Url.Action("Search","Category",new{s="*"})",
+					method: "get",
+					dataType: "jSon"
+				}).done(function(e) {
+					if (e.success) {
+						renderdata(e.data);
+						$("#resultdiv").show(600);
+					} else {
+						alert(e.message);
+					}
+				});
+			}
+
+			$("#frmAdd").submit(function(ev) {
+				ev.preventDefault();
+				//console.log("submit oldu" + $("#txtCategoryName").val());
 				var data = {
 					CategoryName: $("#txtCategoryName").val(),
 					Description: $("#txtDescription").val()
 				}
 				$.ajax({
-					url: '@Url.Action("Add","Category")',
+					url: '@Url.Action("Add", "Category")',
 					method: "post",
 					dataType: "json",
 					data: data
@@ -142,11 +158,34 @@
 						$(a).attr("href", "@Url.Action("Detail", "Category")" + "/" + value.CategoryID)
 							.attr("class", "btn btn-success").html("Detail");
 
+						var btnSil = document.createElement("input");
+						$(btnSil).attr({
+							"type": "button",
+							"class": "btn btn-danger",
+							"value": "Delete",
+							"name": value.CategoryID
+						}).on("click", function () {
+							var id = this.name;
+							$.ajax(
+								{
+									url: "@Url.Action("Delete","Category")",
+									method: "post",
+									dataType: "json",
+									data: {id:id}
+								}).done(function(e) {
+									alert(e.message);
+									init();
+							});
+						});
+
 						$(a).appendTo(td4);
+						$(btnSil).appendTo(td4);
 
 						$(tr).append(th).append(td).append(td2).append(td3).append(td4).appendTo($("#resultbody"));
 					});
 			}
+
+			init();
 		});
 	</script>
 }
