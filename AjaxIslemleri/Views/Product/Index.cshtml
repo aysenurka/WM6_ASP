@@ -18,6 +18,31 @@
 			</select>
 		</div>
 	</div>
+	
+	<div class="row" id="resultdiv">
+		<div class="col-md-12">
+			<table class="table table-responsive table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Product Name</th>
+						<th>Category Name</th>
+						<th>Quantity per Unit</th>
+						<th>Unit Price</th>
+						<th>Units in Stock</th>
+						<th>Units on Order</th>
+						<th>Reorder Level</th>
+						<th>Discontinued</th>
+						<th>Added Date</th>
+						<th>Supplier Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody id="resultbody"></tbody>
+			</table>
+		</div>
+	</div>
+
 </div>
 
 @section scripts
@@ -25,6 +50,19 @@
 	<script>
 		$(function() {
 			function init() {
+				$.ajax({
+					url: "@Url.Action("GetAllProducts","Product")",
+					method: "get",
+					dataType: "json"
+				}).done(function(e) {
+					if (e.success) {
+						e.data.ProductID = id;
+						renderData(e.data);
+						$("#resultdiv").show(500);
+					} else {
+						alert(e.message);
+					}
+				});
 				$.ajax({
 					url: "@Url.Action("GetAllCategories", "Product")",
 					method: "get",
@@ -35,19 +73,18 @@
 						$("#cmbCategory").empty();
 						$("#cmbCategory")
 							.append($("<option></option>")
-								.attr("value", 0)
-								.text("Kategorisi yok"));
+							.attr("value", 0)
+							.text("Kategorisi yok"));
 						$.each(e.data,
 							function(key, value) {
 								$("#cmbCategory")
 									.append($("<option></option>")
-										.attr("value", value.CategoryID)
-										.text(value.CategoryName));
+									.attr("value", value.CategoryID)
+									.text(value.CategoryName));
 							});
 					}
 				});
 			}
-
 
 			//$("#cmbCategory").change(function() {
 			//	var id = $(this).val(); // "#cmbCategory"
@@ -55,9 +92,90 @@
 			//});
 			$("#cmbCategory").change(function() {
 				var id = $(this).val(); // "#cmbCategory"
-				console.log($("#cmbCategory option:selected").val());
-
+				//console.log($("#cmbCategory option:selected").val());
+				
 			});
+
+
+			function renderData(data) {
+				$("#resultbody").empty();
+				$.each(data,
+					function(key, value) {
+						var tr = document.createElement("tr");
+						var th = document.createElement("th");
+						th.innerText = key + 1;
+						var td1 = document.createElement("td");
+						td1.innerText = value.ProductName;
+						var td2 = document.createElement("td");
+						td2.innerText = value.CategoryName;
+						var td3 = document.createElement("td");
+						td3.innerText = value.QuantityPerUnit;
+						var td4 = document.createElement("td");
+						td4.innerText = value.UnitPriceFormatted;
+						var td5 = document.createElement("td");
+						td5.innerText = value.UnitsInStock;
+						var td6 = document.createElement("td");
+						td6.innerText = value.UnitsOnOrder;
+						var td7 = document.createElement("td");
+						td7.innerText = value.ReorderLevel;
+						var td8 = document.createElement("td");
+						td8.innerText = value.Discontinued.toString();
+						var td9 = document.createElement("td");
+						td9.innerText = value.AddedDateFormatted;
+						var td10 = document.createElement("td");
+						td10.innerText = value.SupplierName;
+						var td11 = document.createElement("td");
+
+						@*var a = document.createElement("a");
+						$(a).attr("href", "@Url.Action("Detail","Product")" + "/" + value.ProductID)
+							.attr("class", "btn btn-info").html("Detail");*@
+
+						var btnSil = document.createElement("input");
+						$(btnSil).attr({
+							"type": "button",
+							"class": "btn btn-danger",
+							"value": "Delete",
+							"name": value.ProductID
+						}).on("click",
+							function() {
+								var id = this.name;
+								$.ajax({
+									url: "@Url.Action("Delete","Product")",
+									method: "post",
+									dataType: "json",
+									data: { id: id }
+								}).done(function(e) {
+									alert(e.message);
+									init();
+								});
+							});
+
+						var btnGuncelle = document.createElement("input");
+						$(btnGuncelle).attr({
+							"type": "button",
+							"class": "btn btn-warning",
+							"value": "Update",
+							"name": value.ProductID
+						}).on("click",
+							function() {
+								var id = this.name;
+								var satir = $(this).parent().parent()[0].childNodes;
+								var ProductName = satir[1].innerText;
+								var UnitPrice = satir[4].innerText;
+								var AddedDate = satir[9].innerText;
+
+
+								$('#frmAdd').hide();
+
+							});
+
+						$(a).appendTo(td11);
+						$(td11).append(btnSil);
+						$(tr).append(th).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6)
+							.append(td7).append(td8).append(td9).append(td10).append(td11)
+							.appendTo($("#resultbody"));
+					});
+			}
 
 			init();
 		});
