@@ -44,5 +44,48 @@ namespace AjaxIslemleri.Controllers
                 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        public JsonResult GetAllProducts()
+        {
+            try
+            {
+                var db = new NorthwindEntities();
+                var data = db.Products.OrderBy(x => x.ProductName)
+                    .ToList()
+                    .Select(x => new ProductViewModel()
+                    {
+                        CategoryName = x.Category?.CategoryName,
+                        AddedDate = x.AddedDate,
+                        CategoryID = x.CategoryID,
+                        ProductName = x.ProductName,
+                        ProductID = x.ProductID,
+                        QuantityPerUnit = x.QuantityPerUnit,
+                        UnitPrice = x.UnitPrice,
+                        Discontinued = x.Discontinued,
+                        UnitsInStock = x.UnitsInStock,
+                        UnitsOnOrder = x.UnitsOnOrder,
+                        SupplierID = x.SupplierID,
+                        SupplierName = x.Supplier?.CompanyName,
+                        ReorderLevel = x.ReorderLevel,
+                        AddedDateFormatted = $"{x.AddedDate:g}",
+                        UnitPriceFormatted = $"{x.UnitPrice:c2}"
+                    })
+                    .ToList();
+                return Json(new ResponseData()
+                {
+                    success = true,
+                    data = data
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    success = true,
+                    message = $"bir hata olustu\n{ex.Message}"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

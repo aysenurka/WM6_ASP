@@ -1,7 +1,65 @@
 ﻿
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Products Index";
 }
 
-<h2>Index</h2>
+<br />
+<br />
+<br />
 
+<div class="container">
+	<div class="row"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<select id="cmbCategory" class="form-control">
+				<option value="1">a</option>
+				<option value="2">b</option>
+				<option value="3">c</option>
+			</select>
+		</div>
+	</div>
+</div>
+
+@section scripts
+{
+	<script>
+		$(function() {
+			function init() {
+				$.ajax({
+					url: "@Url.Action("GetAllCategories", "Product")",
+					method: "get",
+					dataType: "json"
+				}).done(function(e) {
+					//console.log(e);
+					if (e.success) {
+						$("#cmbCategory").empty();
+						$("#cmbCategory")
+							.append($("<option></option>")
+								.attr("value", 0)
+								.text("Kategorisi yok"));
+						$.each(e.data,
+							function(key, value) {
+								$("#cmbCategory")
+									.append($("<option></option>")
+										.attr("value", value.CategoryID)
+										.text(value.CategoryName));
+							});
+					}
+				});
+			}
+
+
+			//$("#cmbCategory").change(function() {
+			//	var id = $(this).val(); // "#cmbCategory"
+			//	console.log(id);
+			//});
+			$("#cmbCategory").change(function() {
+				var id = $(this).val(); // "#cmbCategory"
+				console.log($("#cmbCategory option:selected").val());
+
+			});
+
+			init();
+		});
+	</script>
+}
