@@ -56,7 +56,6 @@
 					dataType: "json"
 				}).done(function(e) {
 					if (e.success) {
-						e.data.ProductID = id;
 						renderData(e.data);
 						$("#resultdiv").show(500);
 					} else {
@@ -126,9 +125,9 @@
 						td10.innerText = value.SupplierName;
 						var td11 = document.createElement("td");
 
-						@*var a = document.createElement("a");
+						var a = document.createElement("a");
 						$(a).attr("href", "@Url.Action("Detail","Product")" + "/" + value.ProductID)
-							.attr("class", "btn btn-info").html("Detail");*@
+							.attr("class", "btn btn-info").html("Detail");
 
 						var btnSil = document.createElement("input");
 						$(btnSil).attr({
@@ -150,24 +149,24 @@
 								});
 							});
 
-						var btnGuncelle = document.createElement("input");
-						$(btnGuncelle).attr({
-							"type": "button",
-							"class": "btn btn-warning",
-							"value": "Update",
-							"name": value.ProductID
-						}).on("click",
-							function() {
-								var id = this.name;
-								var satir = $(this).parent().parent()[0].childNodes;
-								var ProductName = satir[1].innerText;
-								var UnitPrice = satir[4].innerText;
-								var AddedDate = satir[9].innerText;
+						//var btnGuncelle = document.createElement("input");
+						//$(btnGuncelle).attr({
+						//	"type": "button",
+						//	"class": "btn btn-warning",
+						//	"value": "Update",
+						//	"name": value.ProductID
+						//}).on("click",
+						//	function() {
+						//		var id = this.name;
+						//		var satir = $(this).parent().parent()[0].childNodes;
+						//		var ProductName = satir[1].innerText;
+						//		var UnitPrice = satir[4].innerText;
+						//		var AddedDate = satir[9].innerText;
 
 
-								$('#frmAdd').hide();
+						//		$('#frmAdd').hide();
 
-							});
+						//	});
 
 						$(a).appendTo(td11);
 						$(td11).append(btnSil);
