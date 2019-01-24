@@ -126,7 +126,41 @@ namespace AjaxIslemleri.Controllers
             {
                 return Json(new ResponseData()
                 {
-                    message = $"bir hata olustu {ex.Message}",
+                    message = $"bir hata olustu\n{ex.Message}",
+                    success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Update(Category model)
+        {
+            try
+            {
+                var db=new NorthwindEntities();
+                var cat = db.Categories.Find(model.CategoryID);
+                if (cat == null)
+                {
+                    return Json(new ResponseData()
+                    {
+                        message = $"kategori bulanamadı",
+                        success = false
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                cat.Description = model.Description;
+                cat.CategoryName = model.CategoryName;
+                db.SaveChanges();
+                return Json(new ResponseData()
+                {
+                    message = $"{cat.CategoryName} kategorisi güncellendi",
+                    success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    message = $"kategori bulanamadı\n{ex.Message}",
                     success = false
                 }, JsonRequestBehavior.AllowGet);
             }
