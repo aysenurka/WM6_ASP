@@ -82,7 +82,7 @@ namespace AjaxIslemleri.Controllers
             {
                 return Json(new ResponseData()
                 {
-                    success = true,
+                    success = false,
                     message = $"bir hata olustu\n{ex.Message}"
                 }, JsonRequestBehavior.AllowGet);
             }

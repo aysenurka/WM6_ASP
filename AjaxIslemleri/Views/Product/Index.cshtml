@@ -12,9 +12,9 @@
 	<div class="row">
 		<div class="col-md-6">
 			<select id="cmbCategory" class="form-control">
-				<option value="1">a</option>
+				@*<option value="1">a</option>
 				<option value="2">b</option>
-				<option value="3">c</option>
+				<option value="3">c</option>*@
 			</select>
 		</div>
 	</div>
@@ -51,18 +51,6 @@
 		$(function() {
 			function init() {
 				$.ajax({
-					url: "@Url.Action("GetAllProducts","Product")",
-					method: "get",
-					dataType: "json"
-				}).done(function(e) {
-					if (e.success) {
-						renderData(e.data);
-						$("#resultdiv").show(500);
-					} else {
-						alert(e.message);
-					}
-				});
-				$.ajax({
 					url: "@Url.Action("GetAllCategories", "Product")",
 					method: "get",
 					dataType: "json"
@@ -82,6 +70,19 @@
 									.text(value.CategoryName));
 							});
 					}
+					});
+
+				$.ajax({
+					url: "@Url.Action("GetAllProducts","Product")",
+					method: "get",
+					dataType: "json"
+				}).done(function(e) {
+					if (e.success) {
+						renderData(e.data);
+						$("#resultdiv").show(500);
+					} else {
+						alert(e.message);
+					}
 				});
 			}
 
@@ -91,7 +92,7 @@
 			//});
 			$("#cmbCategory").change(function() {
 				var id = $(this).val(); // "#cmbCategory"
-				//console.log($("#cmbCategory option:selected").val());
+				console.log($("#cmbCategory option:selected").val());
 				
 			});
 
@@ -125,9 +126,9 @@
 						td10.innerText = value.SupplierName;
 						var td11 = document.createElement("td");
 
-						var a = document.createElement("a");
+						@*var a = document.createElement("a");
 						$(a).attr("href", "@Url.Action("Detail","Product")" + "/" + value.ProductID)
-							.attr("class", "btn btn-info").html("Detail");
+							.attr("class", "btn btn-info").html("Detail");*@
 
 						var btnSil = document.createElement("input");
 						$(btnSil).attr({
@@ -149,27 +150,30 @@
 								});
 							});
 
-						//var btnGuncelle = document.createElement("input");
-						//$(btnGuncelle).attr({
-						//	"type": "button",
-						//	"class": "btn btn-warning",
-						//	"value": "Update",
-						//	"name": value.ProductID
-						//}).on("click",
-						//	function() {
-						//		var id = this.name;
-						//		var satir = $(this).parent().parent()[0].childNodes;
-						//		var ProductName = satir[1].innerText;
-						//		var UnitPrice = satir[4].innerText;
-						//		var AddedDate = satir[9].innerText;
+						var btnGuncelle = document.createElement("input");
+						$(btnGuncelle).attr({
+							"type": "button",
+							"class": "btn btn-warning",
+							"value": "Update",
+							"name": value.ProductID
+						}).on("click",
+							function() {
+								var id = this.name;
+								var satir = $(this).parent().parent()[0].childNodes;
+								var ProductName = satir[1].innerText;
+								var UnitPrice = satir[4].innerText;
+								var AddedDate = satir[9].innerText;
 
 
-						//		$('#frmAdd').hide();
+								$('#frmAdd').hide();
+								$('#frmUpdate').show(600);
 
-						//	});
+							});
 
-						$(a).appendTo(td11);
-						$(td11).append(btnSil);
+
+						//$(a).appendTo(td11);
+						$(td11).append(btnSil).append(btnGuncelle);
+						
 						$(tr).append(th).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6)
 							.append(td7).append(td8).append(td9).append(td10).append(td11)
 							.appendTo($("#resultbody"));
