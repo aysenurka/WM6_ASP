@@ -10,7 +10,7 @@ namespace AjaxIslemleri.Controllers
 {
     public class ProductController : Controller
     {
-        // get: product
+        // GET: Product
         public ActionResult Index()
         {
             return View();
@@ -40,18 +40,26 @@ namespace AjaxIslemleri.Controllers
                 return Json(new ResponseData()
                 {
                     success = false,
-                    message = $"bir hata olustu\n{ex.Message}"
+                    message = $"Bir hata olustu {ex.Message}"
                 }, JsonRequestBehavior.AllowGet);
             }
         }
 
         [HttpGet]
-        public JsonResult GetAllProducts()
+        public JsonResult GetAllProducts(string key)
         {
             try
             {
                 var db = new NorthwindEntities();
-                var data = db.Products.OrderBy(x => x.ProductName)
+                var query = db.Products.AsQueryable();
+                if (!string.IsNullOrEmpty(key))
+                {
+                    key = key.ToLower();
+                    query = query.Where(x => x.ProductName.ToLower().Contains(key) ||
+                                       x.Category.CategoryName.ToLower().Contains(key) ||
+                                       x.Supplier.CompanyName.ToLower().Contains(key));
+                }
+                var data = query.OrderBy(x => x.ProductName)
                     .ToList()
                     .Select(x => new ProductViewModel()
                     {
@@ -59,17 +67,17 @@ namespace AjaxIslemleri.Controllers
                         AddedDate = x.AddedDate,
                         CategoryID = x.CategoryID,
                         ProductName = x.ProductName,
-                        ProductID = x.ProductID,
-                        QuantityPerUnit = x.QuantityPerUnit,
-                        UnitPrice = x.UnitPrice,
-                        Discontinued = x.Discontinued,
                         UnitsInStock = x.UnitsInStock,
-                        UnitsOnOrder = x.UnitsOnOrder,
+                        UnitPrice = x.UnitPrice,
+                        ProductID = x.ProductID,
+                        AddedDateFormatted = $"{x.AddedDate:g}",
+                        Discontinued = x.Discontinued,
+                        QuantityPerUnit = x.QuantityPerUnit,
+                        ReorderLevel = x.ReorderLevel,
                         SupplierID = x.SupplierID,
                         SupplierName = x.Supplier?.CompanyName,
-                        ReorderLevel = x.ReorderLevel,
-                        AddedDateFormatted = $"{x.AddedDate:g}",
-                        UnitPriceFormatted = $"{x.UnitPrice:c2}"
+                        UnitPriceFormatted = $"{x.UnitPrice:c2}",
+                        UnitsOnOrder = x.UnitsOnOrder
                     })
                     .ToList();
                 return Json(new ResponseData()
@@ -83,7 +91,33 @@ namespace AjaxIslemleri.Controllers
                 return Json(new ResponseData()
                 {
                     success = false,
-                    message = $"bir hata olustu\n{ex.Message}"
+                    message = $"Bir hata olustu {ex.Message}"
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Add(Product model)
+        {
+            try
+            {
+                var db = new NorthwindEntities();
+                model.CategoryID = model.CategoryID == 0 ? null : model.CategoryID;
+                model.AddedDate = DateTime.Now;
+                db.Products.Add(model);
+                db.SaveChanges();
+                return Json(new ResponseData()
+                {
+                    success = true,
+                    message = $"{model.ProductName} isimli ürün basariyla eklenmiştir."
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    success = false,
+                    message = $"Bir hata olustu {ex.Message}"
                 }, JsonRequestBehavior.AllowGet);
             }
         }

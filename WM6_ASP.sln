@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20190123", "20190123", "{DB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AjaxIslemleri", "AjaxIslemleri\AjaxIslemleri.csproj", "{2DB43895-3902-422D-B179-B14FF4924845}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "20190128", "20190128", "{2A9C26E9-7DAD-4F4F-AE02-7F0C04B50024}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Layout", "Layout\Layout.csproj", "{5E2ED99E-8802-4E67-8D0C-4A4183A382D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{2DB43895-3902-422D-B179-B14FF4924845}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DB43895-3902-422D-B179-B14FF4924845}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DB43895-3902-422D-B179-B14FF4924845}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E2ED99E-8802-4E67-8D0C-4A4183A382D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E2ED99E-8802-4E67-8D0C-4A4183A382D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E2ED99E-8802-4E67-8D0C-4A4183A382D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E2ED99E-8802-4E67-8D0C-4A4183A382D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D8CA902D-45EC-465C-93F1-34915D5BEF0A} = {F970066A-197F-4CBD-BBE6-11AECF8BAF68}
 		{2DB43895-3902-422D-B179-B14FF4924845} = {DB7A1171-4B45-4BD4-A905-BC5733C0E90E}
+		{5E2ED99E-8802-4E67-8D0C-4A4183A382D0} = {2A9C26E9-7DAD-4F4F-AE02-7F0C04B50024}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94CE21A4-4833-4490-A441-645D8238135B}
