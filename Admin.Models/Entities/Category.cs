@@ -14,9 +14,9 @@ namespace Admin.Models.Entities
         [Required]
         public string CategoryName { get; set; }
 
-        [Range(0, 1)]
+        [Range(0, 99)]
         [DisplayName("KDV Oranı")]
-        public decimal TaxRate { get; set; } = 0;
+        public decimal TaxRate { get; set; }
 
         [DisplayName("Üst Kategori")]
         public int? SupCategoryId { get; set; }
@@ -25,6 +25,6 @@ namespace Admin.Models.Entities
         [ForeignKey("SupCategoryId")]
         public virtual Category SupCategory { get; set; }
         public virtual ICollection<Category> Categories { get; set; } = new HashSet<Category>();
-        public virtual ICollection<Product> Products { get; set; }=new HashSet<Product>();
+        public virtual ICollection<Product> Products { get; set; } = new HashSet<Product>();
     }
 }
