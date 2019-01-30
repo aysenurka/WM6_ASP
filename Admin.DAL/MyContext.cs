@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using Admin.Models.Entities;
 
 namespace Admin.DAL
@@ -7,7 +8,10 @@ namespace Admin.DAL
     {
         public MyContext() : base("name=MyCon")
         {
+            this.InstanceDate = DateTime.Now;
         }
+
+        public DateTime InstanceDate { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

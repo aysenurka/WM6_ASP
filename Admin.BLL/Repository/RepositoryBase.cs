@@ -5,17 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Admin.DAL;
 using Admin.Models.Abstracts;
+using TimeSpan = System.TimeSpan;
 
 namespace Admin.BLL.Repository
 {
-    public abstract class RepositoryBase<T, TId> where T : BaseEntity<TId>  // class
+    public abstract class RepositoryBase<T, TId> :IDisposable where T : BaseEntity<TId>  // class
     {
-        protected internal static MyContext DbContext;
+        internal static MyContext DbContext;
         private static DbSet<T> DbObject;
 
         protected RepositoryBase()
         {
             DbContext = DbContext ?? new MyContext();
+            TimeSpan dd = DateTime.Now - DbContext.InstanceDate;
+            if(IsDisposed)
+                DbContext=new MyContext();
+            if(dd.TotalMinutes>30)
+                DbContext =new MyContext();
             DbObject = DbContext.Set<T>();
         }
 
@@ -99,6 +105,13 @@ namespace Admin.BLL.Repository
             DbContext.Entry(entity).State = EntityState.Modified;
             entity.UpdatedDate=DateTime.Now;
             this.Update();
+        }
+
+        public bool IsDisposed { get; set; }
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+            this.IsDisposed = true;
         }
     }
 }

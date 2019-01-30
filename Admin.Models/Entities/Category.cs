@@ -15,9 +15,11 @@ namespace Admin.Models.Entities
         public string CategoryName { get; set; }
 
         [Range(0, 1)]
+        [DisplayName("KDV Oranı")]
         public decimal TaxRate { get; set; } = 0;
 
-        public int SupCategoryId { get; set; }
+        [DisplayName("Üst Kategori")]
+        public int? SupCategoryId { get; set; }
 
 
         [ForeignKey("SupCategoryId")]

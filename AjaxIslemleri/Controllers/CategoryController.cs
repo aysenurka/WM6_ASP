@@ -80,7 +80,7 @@ namespace AjaxIslemleri.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(CategoryViewModel model)
+        public JsonResult Add(CategoryViewModel model)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace AjaxIslemleri.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(int id)
+        public JsonResult  Delete(int id)
         {
             try
             {
@@ -133,7 +133,7 @@ namespace AjaxIslemleri.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Category model)
+        public JsonResult Update(Category model)
         {
             try
             {
