@@ -1,0 +1,70 @@
+﻿@model Product
+@{
+	ViewBag.Title = "Add";
+	Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Add</h2>
+
+<div class="row">
+	<div class="col-md-8 col-md-offset-2">
+		@if (TempData["Message"] != null)
+		{
+			<div class="alert alert-success">
+				<p><strong>Başarılı!</strong><br />@TempData["Message"]</p>
+			</div>
+		}
+		<div class="card">
+			<div class="card-header">
+				<h4>Ürün Ekleme Formu</h4>
+			</div>
+			<div class="card-block">
+				@using (Html.BeginForm("Add", "Product", FormMethod.Post, new { @class = "form-horizontal" }))
+				{
+					@Html.AntiForgeryToken()
+					<div class="form-group">
+						@Html.LabelFor(x => x.Category.CategoryName, new { @class = "col-md-3 control-label" })
+						<div class="col-md-7">
+							@Html.DropDownListFor(x => x.CategoryId, (List<SelectListItem>)ViewBag.CategoryList, new { @class = "form-control", size = "1" })
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(x => x.ProductName, new { @class = "col-md-3 control-label" })
+						<div class="col-md-7">
+							@Html.TextBoxFor(x => x.ProductName, new { @class = "form-control", placeholder = "Ürün Adı" })
+							<br /><span class="text-danger">@Html.ValidationMessageFor(x => x.ProductName)</span>
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(x => x.ProductType,new {@class="col-md-3 control-label"})
+						<div class="col-md-7">
+
+							@Html.RadioButtonFor(x => x.ProductType == ProductTypes.Bulk, "Toptan", new { @class = "form-control", value = "10" })
+							@Html.RadioButtonFor(x => x.ProductType == ProductTypes.Retail, "Peakende", new { @class = "form-control", value = "100" })
+
+							<input type="radio" id="example-inline-radio1" name="example-inline-radios" value="option1"> One
+
+							<input type="radio" id="example-inline-radio2" name="example-inline-radios" value="option2"> Two
+
+
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(x => x.BuyPrice, new { @class = "col-md-3 control-label" })
+						<div class="col-md-7">
+							@Html.TextBoxFor(x => x.BuyPrice, new { @class = "form-control", placeholder = "Alış Fiyatı", type = "number", step = "0.01" })
+							<br /><span class="text-danger">@Html.ValidationMessageFor(x => x.BuyPrice)</span>
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(x => x.SalesPrice, new { @class = "col-md-3 control-label" })
+						<div class="col-md-7">
+							@Html.TextBoxFor(x => x.SalesPrice, new { @class = "form-control", placeholder = "Satış Fiyatı", type = "number", step = "0.01" })
+							<br /><span class="text-danger">@Html.ValidationMessageFor(x => x.SalesPrice)</span>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+</div>

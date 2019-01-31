@@ -60,5 +60,14 @@ namespace Admin.Web.UI.Controllers
 
             return list;
         }
+
+        protected List<Product> GetProductList()
+        {
+            var products = new ProductRepo().GetAll()
+                .OrderBy(x => x.ProductName)
+                .ToList();
+
+            return products;
+        }
     }
 }
