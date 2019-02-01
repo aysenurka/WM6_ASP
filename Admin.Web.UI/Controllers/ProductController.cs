@@ -55,7 +55,7 @@ namespace Admin.Web.UI.Controllers
                 {
                     Text = $"Bir hata oluştu: {EntityHelpers.ValidationMessage(ex)}",
                     ActionName = "Add",
-                    ControllerName = "Category",
+                    ControllerName = "Product",
                     ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
@@ -66,7 +66,7 @@ namespace Admin.Web.UI.Controllers
                 {
                     Text = $"Bir hata oluştu: {ex.Message}",
                     ActionName = "Add",
-                    ControllerName = "Category",
+                    ControllerName = "Product",
                     ErrorCode = 500
                 };
                 return RedirectToAction("Error", "Home");
