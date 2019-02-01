@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Admin.Models.Abstracts;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using Admin.Models.Abstracts;
 
 namespace Admin.Models.Entities
 {
@@ -10,13 +10,10 @@ namespace Admin.Models.Entities
     {
         [DisplayName("Birim")]
         public decimal Quantity { get; set; }
-
         [DisplayName("Fiyat")]
         public decimal Price { get; set; }
-
         [DisplayName("İndirim Oranı")]
         public decimal Discount { get; set; }
-
 
         [ForeignKey("Id")]
         public virtual Order Order { get; set; }

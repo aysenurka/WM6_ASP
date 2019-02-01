@@ -48,6 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\201902010836246_init.cs" />
+    <Compile Include="Migrations\201902010836246_init.Designer.cs">
+      <DependentUpon>201902010836246_init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MyContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -61,6 +65,11 @@
       <Project>{ef7b03c8-9809-48bd-979d-1c29a968d07d}</Project>
       <Name>Admin.Models</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201902010836246_init.resx">
+      <DependentUpon>201902010836246_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
