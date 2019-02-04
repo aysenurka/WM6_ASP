@@ -74,7 +74,7 @@ namespace Admin.Web.UI.Controllers
                     return View("Index", model);
                 }
 
-                TempData["Message"] = "Kaydınız alınlıştır. Lütfen giriş yapınız";
+                TempData["Message"] = "Kaydınız alınmıştır. Lütfen giriş yapınız";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
