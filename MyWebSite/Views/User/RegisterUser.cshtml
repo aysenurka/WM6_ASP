@@ -1,0 +1,90 @@
+﻿@model UserVM
+@{
+	ViewBag.Title = "RegisterUser";
+}
+
+<h2>RegisterUser</h2>
+@using (Html.BeginForm("RegisterUser", "User", FormMethod.Post))
+{
+
+	@Html.AntiForgeryToken()
+	<div class="row ">
+		<!--- For Name---->
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-xs-4">
+					<label class="firstname">First Name :</label>
+				</div>
+				<div class="col-xs-8">
+					@Html.TextBoxFor(x => x.FirstName, new { @class = "form-control", @placeholder = "Lütfen isminizi giriniz" })
+					<span class="glyphicon glyphicon-remove alert-danger">@Html.ValidationMessageFor(x => x.FirstName)</span>
+					@*<input type="text" name="fname" id="fname" placeholder="Enter your First Name" class="form-control ">*@
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-xs-4">
+					<label class="lastname">Last Name :</label>
+				</div>
+				<div class="col-xs-8">
+					@Html.TextBoxFor(x => x.LastName, new { @class = "form-control", @placeholder = "Lütfen soyisminizi giriniz" })
+					<span class="glyphicon glyphicon-remove alert-danger">@Html.ValidationMessageFor(x => x.LastName)</span>
+					@*<input type="text" name="fname" id="fname" placeholder="Enter your First Name" class="form-control ">*@
+				</div>
+			</div>
+		</div>
+
+		<!-----For email---->
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-xs-4">
+					<label class="mail">Email :</label>
+				</div>
+				<div class="col-xs-8">
+					@Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Lütfen email adresinizi giriniz" })
+					<span class="glyphicon glyphicon-remove alert-danger">@Html.ValidationMessageFor(x => x.Email)</span>
+					@*<input type="text" name="fname" id="fname" placeholder="Enter your First Name" class="form-control ">*@
+				</div>
+			</div>
+		</div>
+		<!-----For Password and confirm password---->
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-xs-4">
+					<label class="pass">Password :</label>
+				</div>
+				<div class="col-xs-8">
+					@Html.PasswordFor(x => x.Email, new { @class = "form-control", @placeholder = "Lütfen şifrenizi giriniz" })
+					<span class="glyphicon glyphicon-remove alert-danger">@Html.ValidationMessageFor(x => x.Password)</span>
+					@*<input type="text" name="fname" id="fname" placeholder="Enter your First Name" class="form-control ">*@
+				</div>
+			</div>
+		</div>
+
+		<!-----------For Phone number-------->
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-xs-4 ">
+					<label class="gender">Gender:</label>
+				</div>
+
+				<div class="col-xs-4 male">
+					@Html.RadioButtonFor(x => x.Gender, "0")Male
+					@*<input type="radio" name="gender" id="gender" value="boy">Male</input>*@
+				</div>
+
+				<div class="col-xs-4 female">
+					@Html.RadioButtonFor(x => x.Gender, "1")Female
+					@*<input type="radio" name="gender" id="gender" value="girl">Female</input>*@
+				</div>
+
+			</div>
+			<div class="col-sm-12">
+				<button type="submit" class="btn btn-warning">Kaydet</button>
+				@*<div class="btn btn-warning">Submit</div>*@
+			</div>
+		</div>
+	</div>
+}
