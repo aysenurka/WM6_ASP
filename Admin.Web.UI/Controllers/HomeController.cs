@@ -14,6 +14,7 @@ namespace Admin.Web.UI.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Error()
         {
             return View();
