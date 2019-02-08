@@ -35,47 +35,47 @@ namespace Admin.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> Add(AddProductViewModel prd)
+        public async Task<ActionResult> Add(AddProductViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 ViewBag.ProductList = GetProductSelectList();
                 ViewBag.CategoryList = GetCategorySelectList();
-                return View(prd);
+                return View(model);
             }
 
             try
             {
-                if (prd.Product.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
-                    prd.Product.SupProductId = null;
+                if (model.Product.SupProductId.ToString().Replace("0", "").Replace("-", "").Length == 0)
+                    model.Product.SupProductId = null;
 
-                prd.Product.LastPriceUpdateDate = DateTime.Now;
-                Product model = new Product()
+                model.Product.LastPriceUpdateDate = DateTime.Now;
+                Product product = new Product()
                 {
-                    Category = prd.Product.Category,
-                    Description = prd.Product.Description,
-                    ProductName = prd.Product.ProductName,
-                    SalesPrice = prd.Product.SalesPrice,
-                    BuyPrice = prd.Product.BuyPrice,
-                    Id = prd.Product.Id,
-                    AvatarPath = prd.Product.AvatarPath,
-                    Barcode = prd.Product.Barcode,
-                    CreatedDate = prd.Product.CreatedDate,
-                    Invoices = prd.Product.Invoices,
-                    LastPriceUpdateDate = prd.Product.LastPriceUpdateDate,
-                    ProductType = prd.Product.ProductType,
-                    Products = prd.Product.Products,
-                    Quantity = prd.Product.Quantity,
-                    SupProduct = prd.Product.SupProduct,
-                    SupProductId = prd.Product.SupProductId,
-                    UnitsInStock = prd.Product.UnitsInStock,
-                    UpdatedDate = prd.Product.UpdatedDate
+                    Category = model.Product.Category,
+                    Description = model.Product.Description,
+                    ProductName = model.Product.ProductName,
+                    SalesPrice = model.Product.SalesPrice,
+                    BuyPrice = model.Product.BuyPrice,
+                    Id = model.Product.Id,
+                    AvatarPath = model.Product.AvatarPath,
+                    Barcode = model.Product.Barcode,
+                    CreatedDate = model.Product.CreatedDate,
+                    Invoices = model.Product.Invoices,
+                    LastPriceUpdateDate = model.Product.LastPriceUpdateDate,
+                    ProductType = model.Product.ProductType,
+                    Products = model.Product.Products,
+                    Quantity = model.Product.Quantity,
+                    SupProduct = model.Product.SupProduct,
+                    SupProductId = model.Product.SupProductId,
+                    UnitsInStock = model.Product.UnitsInStock,
+                    UpdatedDate = model.Product.UpdatedDate
                 };
-                model.CategoryId = prd.Product.CategoryId;
-                if (prd.PostedFile != null &&
-                    prd.PostedFile.ContentLength > 0)
+                product.CategoryId = model.Product.CategoryId;
+                if (model.PostedFile != null &&
+                    model.PostedFile.ContentLength > 0)
                 {
-                    var file = prd.PostedFile;
+                    var file = model.PostedFile;
                     string fileName = Path.GetFileNameWithoutExtension(file.FileName);
                     string extName = Path.GetExtension(file.FileName);
                     fileName = StringHelpers.UrlFormatConverter(fileName);
@@ -91,10 +91,10 @@ namespace Admin.Web.UI.Controllers
                     img.Resize(250, 250, false);
                     img.AddTextWatermark("Wissen");
                     img.Save(dosyayolu);
-                    model.AvatarPath = "/Upload/" + fileName + extName;
+                    product.AvatarPath = "/Upload/" + fileName + extName;
                 }
-                await new ProductRepo().InsertAsync(model);
-                TempData["Message"] = $"{prd.Product.ProductName} isimli ürün başarıyla eklenmiştir";
+                await new ProductRepo().InsertAsync(product);
+                TempData["Message"] = $"{model.Product.ProductName} isimli ürün başarıyla eklenmiştir";
                 return RedirectToAction("Add");
             }
             catch (DbEntityValidationException ex)
