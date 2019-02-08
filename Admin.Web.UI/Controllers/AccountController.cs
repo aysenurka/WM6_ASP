@@ -1,9 +1,11 @@
 ﻿using Admin.Models.IdentityModels;
 using Admin.Models.ViewModels;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using Admin.BLL.Helpers;
 using Admin.BLL.Identity;
@@ -175,7 +177,8 @@ namespace Admin.Web.UI.Controllers
                         Name = user.Name,
                         Surname = user.Surname,
                         PhoneNumber = user.PhoneNumber,
-                        UserName = user.UserName
+                        UserName = user.UserName,
+                        AvatarPath = string.IsNullOrEmpty(user.AvatarPath) ? "/assets/img/avatars/avatar3.jpg" : user.AvatarPath
                     }
                 };
                 return View(data);
@@ -210,13 +213,35 @@ namespace Admin.Web.UI.Controllers
 
                 user.Name = model.UserProfileViewModel.Name;
                 user.Surname = model.UserProfileViewModel.Surname;
+                user.PhoneNumber = model.UserProfileViewModel.PhoneNumber;
                 if (user.Email != model.UserProfileViewModel.Email)
                 {
                     //todo tekrardan aktivasyon gönderilmeli ve kullanıcı rolü aktif olamayan bir kullanıcı rolüne atanmalı!
                 }
-
                 user.Email = model.UserProfileViewModel.Email;
-                user.PhoneNumber = model.UserProfileViewModel.PhoneNumber;
+
+                if (model.UserProfileViewModel.PostedFile != null &&
+                    model.UserProfileViewModel.PostedFile.ContentLength > 0)
+                {
+                    var file = model.UserProfileViewModel.PostedFile;
+                    string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+                    string extName = Path.GetExtension(file.FileName);
+                    fileName = StringHelpers.UrlFormatConverter(fileName);
+                    fileName += StringHelpers.GetCode();
+                    var klasoryolu = Server.MapPath("~/Upload/");
+                    var dosyayolu = Server.MapPath("~/Upload/") + fileName + extName;
+
+                    if (!Directory.Exists(klasoryolu))
+                        Directory.CreateDirectory(klasoryolu);
+                    file.SaveAs(dosyayolu);
+
+                    WebImage img = new WebImage(dosyayolu);
+                    img.Resize(250, 250, false);
+                    img.AddTextWatermark("Wissen");
+                    img.Save(dosyayolu);
+                    user.AvatarPath = "/Upload/" + fileName + extName;
+                }
+
                 await userManager.UpdateAsync(user);
                 TempData["Message"] = "Profiliniz güncellenmiştir";
                 return RedirectToAction("UserProfile");

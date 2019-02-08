@@ -19,5 +19,7 @@ namespace Admin.Models.IdentityModels
         public string Surname { get; set; }
 
         public string ActivationCode { get; set; }
+
+        public string AvatarPath { get; set; }
     }
 }
