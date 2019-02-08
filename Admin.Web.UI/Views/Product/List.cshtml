@@ -1,0 +1,28 @@
+﻿@using System.Web.Caching
+@model List<Product>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<table class="table table-responsive table-striped">
+	<thead>
+	<tr>
+		<th>#</th>
+		<th>Product Name</th>
+		<th>Photo</th>
+	</tr>
+	</thead>
+	<tbody>
+	@for (int i = 0; i < Model.Count; i++)
+	{
+		var current = Model[i];
+		<tr>
+			<th>@(i + 1)</th>
+			<td>@current.ProductName</td>
+			<td><img src="@current.AvatarPath" style="width: 50px; height: 50px" alt="@current.ProductName"/></td>
+		</tr>
+	}
+	</tbody>
+</table>
