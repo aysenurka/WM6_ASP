@@ -122,6 +122,36 @@ namespace Admin.Web.UI.Controllers
         }
 
         [HttpGet]
+        public JsonResult CheckBarcode(string barcode)
+        {
+            try
+            {
+                if (new ProductRepo().Queryable().Any(x => x.Barcode == barcode))
+                {
+                    return Json(new ResponseData()
+                    {
+                        message = $"{barcode} sistemde kayıtlı",
+                        success = true
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new ResponseData()
+                {
+                    message = $"{barcode} bilgisi servisten getirildi",
+                    success = true,
+                    data = new BarcodeService().Get(barcode)
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseData()
+                {
+                    message = $"Bir hata oluştu: {ex.Message}",
+                    success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult List()
         {
