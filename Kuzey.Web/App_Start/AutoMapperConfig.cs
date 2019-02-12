@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using AutoMapper;
+﻿using AutoMapper;
 using Kuzey.Models.Entities;
 using Kuzey.Models.ViewModels;
 
@@ -16,7 +12,16 @@ namespace Kuzey.Web.App_Start
             {
                 CategoryMapping(cfg);
                 ProductMapping(cfg);
+                EmployeeMapping(cfg);
             });
+        }
+
+        private static void EmployeeMapping(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Employee, EmployeeViewModel>()
+                .ForMember(dest => dest.SubEmployeeCount, opt => opt.MapFrom(x => x.Employees1.Count))
+                .ForMember(dest => dest.ReportsName, opt => opt.MapFrom((s, d) => s.Employee1?.FirstName + " " + s.Employee1?.LastName))
+                .ReverseMap();
         }
 
         private static void ProductMapping(IMapperConfigurationExpression cfg)
