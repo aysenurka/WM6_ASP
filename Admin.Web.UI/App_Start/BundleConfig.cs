@@ -19,8 +19,6 @@ namespace Admin.Web.UI.App_Start
 
             bundles.Add(new StyleBundle("~/bundle/css")
                 .Include(
-                    "~/assets/css/font-awesome.css",
-                    "~/assets/css/ionicons.css",
                     "~/assets/css/bootstrap.css",
                     "~/assets/css/app.css",
                     "~/assets/css/app-custom.css"
