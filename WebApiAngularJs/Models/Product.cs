@@ -12,7 +12,7 @@ namespace WebApiAngularJs.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Products
+    public partial class Product
     {
         public int ProductID { get; set; }
         public string ProductName { get; set; }
@@ -26,6 +26,6 @@ namespace WebApiAngularJs.Models
         public bool Discontinued { get; set; }
         public System.DateTime AddedDate { get; set; }
     
-        public virtual Categories Categories { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

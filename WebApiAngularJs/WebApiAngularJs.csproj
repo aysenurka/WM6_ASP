@@ -120,13 +120,13 @@
     <Content Include="Global.asax" />
     <Content Include="Models\NorthModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>NorthModel.Context.cs</LastGenOutput>
       <DependentUpon>NorthModel.edmx</DependentUpon>
+      <LastGenOutput>NorthModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="Models\NorthModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>NorthModel.edmx</DependentUpon>
-      <LastGenOutput>NorthModel1.cs</LastGenOutput>
+      <LastGenOutput>NorthModel.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
@@ -184,7 +184,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Categories.cs">
+    <Compile Include="Models\Category.cs">
       <DependentUpon>NorthModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NorthModel.Context.cs">
@@ -192,18 +192,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NorthModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\NorthModel.cs" />
-    <Compile Include="Models\NorthModel.Designer.cs">
-      <DependentUpon>NorthModel.edmx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Models\NorthModel1.cs">
+    <Compile Include="Models\NorthModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NorthModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Products.cs">
+    <Compile Include="Models\NorthModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NorthModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
       <DependentUpon>NorthModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
