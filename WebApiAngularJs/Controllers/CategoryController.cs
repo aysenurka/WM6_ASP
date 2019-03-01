@@ -12,6 +12,8 @@ namespace WebApiAngularJs.Controllers
     public class CategoryController : ApiController
     {
         NorthwindEntities db = new NorthwindEntities();
+
+        [HttpGet]
         public IHttpActionResult GetAll()
         {
             try
@@ -33,6 +35,7 @@ namespace WebApiAngularJs.Controllers
             }
         }
 
+        [HttpGet]
         public IHttpActionResult Get(int id = 0)
         {
             try
@@ -43,7 +46,7 @@ namespace WebApiAngularJs.Controllers
                     return NotFound();
                 }
 
-                var data=new CategoryViewModel()
+                var data = new CategoryViewModel()
                 {
                     CategoryID = cat.CategoryID,
                     CategoryName = cat.CategoryName,
@@ -63,7 +66,7 @@ namespace WebApiAngularJs.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Add([FromBody] CategoryViewModel model)
+        public IHttpActionResult Add([FromBody]CategoryViewModel model)
         {
             try
             {
@@ -77,7 +80,7 @@ namespace WebApiAngularJs.Controllers
                 return Ok(new
                 {
                     success = true,
-                    message="Kategori ekleme işlemi başarılı"
+                    message = "Kategori ekleme işlemi başarılı"
                 });
             }
             catch (Exception ex)
@@ -145,10 +148,10 @@ namespace WebApiAngularJs.Controllers
         }
     }
 }
-    
-    public class CategoryViewModel
-    {
-        public int CategoryID { get; set; }
-        public string CategoryName { get; set; }
-        public string Description { get; set; }
-    }
+
+public class CategoryViewModel
+{
+    public int CategoryID { get; set; }
+    public string CategoryName { get; set; }
+    public string Description { get; set; }
+}
