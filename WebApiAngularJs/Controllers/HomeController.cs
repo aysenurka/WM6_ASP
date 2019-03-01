@@ -18,5 +18,10 @@ namespace WebApiAngularJs.Controllers
         {
             return View();
         }
+
+        public ActionResult Category()
+        {
+            return View();
+        }
     }
 }
