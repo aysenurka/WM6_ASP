@@ -180,3 +180,30 @@ app.controller("CategoryCtrl", function ($scope, $http) {
 	};
 	init();
 });
+
+app.controller("ShipperCtrl", function ($scope, $http) {
+	$scope.shipperList = [];
+	$scope.ekleMi = false;
+	$scope.istekVarmi = false;
+
+	function init() {
+		$scope.istekVarmi = true;
+		$http({
+			method: 'GET',
+			url: host + "api/shipper/getall"
+		}).then(function successCalBack(response) {
+			$scope.istekVarmi = false;
+			var r = response.data;
+			if (r.success) {
+				$scope.shipperList = r.data;
+			} else {
+				alert(r.message);
+			}
+		}, function errorCallBack(response) {
+			$scope.istekVarmi = false;
+			console.log(response);
+		});
+	}
+
+	init();
+});

@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+}
+
+<html ng-app="myApp">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Shipper</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/app.js"></script>
+</head>
+<body>
+    <div class="main" ng-controller="ShipperCtrl">
+        <div class="row">
+            <div class="col-md-6">
+                <input type="checkbox" class="checkbox" ng-model="ekleMi" />New Shipper ?
+                <form name="ekleform" ng-show="ekleMi">
+                    <input type="hidden" ng-model="yeni.ShipperID" />
+
+                    <input type="text" class="form-control col-md-3" ng-model="yeni.CompanyName" placeholder="Company Name" required minlength="3" /><br />
+
+                    <input type="text" class="form-control col-md-3 col-md-offset-3" ng-model="yeni.Phone" placeholder="Phone Number" required minlegth="5" /><br />
+
+                    <input type="button" class="btn btn-success" value="Add" ng-show="ekleform.$valid" />
+                </form>
+            </div>
+        </div> <!-- ekle -->
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" class="form-control" name="name" placeholder="Ara..." ng-model="txtara.CompanyName" /><br />
+            </div>
+        </div> <!-- ara -->
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Company Name</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(key,item) in shipperList |filter:txtara track by item.ShipperID">
+                            <th>{{key+1}}</th>
+                            <td>{{item.CompanyName}}</td>
+                            <td>{{item.Phone}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- table -->
+    </div>
+</body>
+</html>

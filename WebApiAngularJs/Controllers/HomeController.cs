@@ -23,5 +23,10 @@ namespace WebApiAngularJs.Controllers
         {
             return View();
         }
+
+        public ActionResult Shipper()
+        {
+            return View();
+        }
     }
 }

@@ -17,15 +17,17 @@
 <body>
     <div class="main" ng-controller="ProductCtrl">
         <div class="row">
+            
             <div class="col-md-4">
-                <form name="urunekle">
+                <input type="checkbox" class="checkbox" ng-model="ekleMi" /> Ürün Ekle
+                <form name="urunekle" ng-show="ekleMi">
                     <input type="text" placeholder="Ürün Adı" name="urunadi" ng-model="yeni.urunAdi" required minlength="3" /><br />
 
-                    <label style="color:red" ng-show="!urunekle.urunadi.$valid && urunekle.urunadi.$dirty">Lütfen en az 3 karakter giriniz</label><br />
+                    <label style="color: red" ng-show="!urunekle.urunadi.$valid && urunekle.urunadi.$dirty">Lütfen en az 3 karakter giriniz</label><br />
 
                     <input type="number" placeholder="Fiyat" name="fiyat" ng-model="yeni.fiyat" required min="0.1" max="999" /><br />
 
-                    <label style="color:red" ng-show="!urunekle.fiyat.$valid && urunekle.fiyat.$dirty">Lütfen 0-999 aralığında giriniz</label><br />
+                    <label style="color: red" ng-show="!urunekle.fiyat.$valid && urunekle.fiyat.$dirty">Lütfen 0-999 aralığında giriniz</label><br />
 
                     <input type="button" class="btn btn-success" value="Ekle" ng-click="ekle()" ng-show="urunekle.$valid" />
                 </form>
@@ -82,7 +84,7 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <h3>Sepet: {{sepetToplam}} ₺</h3>
+                <h5>Sepet: {{sepetToplam}} ₺</h5>
                 <table class="table">
 
                     <tbody>
