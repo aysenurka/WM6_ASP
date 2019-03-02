@@ -23,7 +23,7 @@
 
                     <input type="text" class="form-control col-md-3 col-md-offset-3" ng-model="yeni.Phone" placeholder="Phone Number" required minlegth="5" /><br />
 
-                    <input type="button" class="btn btn-success" value="Add" ng-show="ekleform.$valid" />
+                    <input type="button" class="btn btn-success" value="Ekle" ng-show="ekleform.$valid" ng-click="ekle()" />
                 </form>
             </div>
         </div> <!-- ekle -->
@@ -40,6 +40,7 @@
                             <th>#</th>
                             <th>Company Name</th>
                             <th>Phone</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +48,10 @@
                             <th>{{key+1}}</th>
                             <td>{{item.CompanyName}}</td>
                             <td>{{item.Phone}}</td>
+                            <td>
+                                <input type="button" class="btn btn-warning" value="Güncelle" ng-click="guncelle(item)" />
+                                <input type="button" class="btn btn-danger" value="Sil" ng-click="sil(item.ShipperID)" />
+                            </td>
                         </tr>
                     </tbody>
                 </table>

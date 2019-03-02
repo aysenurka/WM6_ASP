@@ -142,12 +142,11 @@ app.controller("CategoryCtrl", function ($scope, $http) {
 			} else {
 				alert("bir hata oluştu " + rs.data.message);
 			}
-		},
-			function (re) {
-				$scope.istekVarMi = false;
-				console.log(re);
-				alert(re.data.Message);
-			});
+		}, function (re) {
+			$scope.istekVarMi = false;
+			console.log(re);
+			alert(re.data.Message);
+		});
 	};
 
 	$scope.getir = function (category) {
@@ -184,6 +183,7 @@ app.controller("CategoryCtrl", function ($scope, $http) {
 app.controller("ShipperCtrl", function ($scope, $http) {
 	$scope.shipperList = [];
 	$scope.ekleMi = false;
+	$scope.guncelleMi = false;
 	$scope.istekVarmi = false;
 
 	function init() {
@@ -191,7 +191,7 @@ app.controller("ShipperCtrl", function ($scope, $http) {
 		$http({
 			method: 'GET',
 			url: host + "api/shipper/getall"
-		}).then(function successCalBack(response) {
+		}).then(function successCallBack(response) {
 			$scope.istekVarmi = false;
 			var r = response.data;
 			if (r.success) {
@@ -204,6 +204,71 @@ app.controller("ShipperCtrl", function ($scope, $http) {
 			console.log(response);
 		});
 	}
+
+	$scope.ekle = function () {
+		$scope.istekVarmi = true;
+		$http({
+			method: 'POST',
+			url: host + "api/shipper/add",
+			data: $scope.yeni
+		}).then(function rs() {
+			$scope.istekVarmi = false;
+			if (rs.data.success) {
+				alert(rs.data.message);
+				init();
+			} else {
+				alert("bir hata oluştu " + rs.data.message);
+			}
+		},
+			function re() {
+				$scope.istekVarmi = false;
+			});
+	};
+
+	$scope.sil = function (id) {
+		$scope.istekVarmi = true;
+		$scope.http({
+			method: 'DELETE',
+			url: host + "api/shipper/delete/" + id
+		}).then(function rs(response) {
+			$scope.istekVarmi = false;
+			if (response.data.success) {
+				alert(response.data.message);
+				init();
+			} else {
+				alert("bir hata oluştu " + response.data.message);
+			}
+		},
+			function (response) {
+				$scope.istekVarmi = false;
+				console.log(response.data.message);
+				alert(response.data.message);
+			});
+	};
+
+	$scope.guncelle = function (shipper) {
+		$scope.istekVarmi = true;
+		$scope.guncelleMi = true;
+		$scope.http({
+			method: 'PUT',
+			url: "api/shipper/put/" + shipper.ShipperID,
+			data: shipper
+		}).then(function rs(response) {
+			$scope.istekVarmi = false;
+			if (response.data.success) {
+				alert(response.data.message);
+				shipper = null;
+				$scope.guncelleMi = false;
+			} else {
+				alert("bir hata oluştu " + response.data.message);
+			}
+			}),
+			function re(response) {
+				$scope.istekVarmi = false;
+				console.log(response.data.message);
+				alert(response.data.message);
+			};
+	};
 
 	init();
 });

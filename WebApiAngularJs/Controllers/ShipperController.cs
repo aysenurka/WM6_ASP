@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+
 using WebApiAngularJs.Models;
 
 namespace WebApiAngularJs.Controllers
@@ -61,7 +62,7 @@ namespace WebApiAngularJs.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Add([FromBody]ShipperViewModel model)
+        public IHttpActionResult Add([FromBody] ShipperViewModel model)
         {
             try
             {
@@ -82,6 +83,61 @@ namespace WebApiAngularJs.Controllers
             {
                 return BadRequest($"Bir hata oluştu {ex.Message}");
             }
+        }
+
+        [HttpDelete]
+        public IHttpActionResult Delete(int id = 0)
+        {
+            try
+            {
+                var ship = db.Shippers.Find(id);
+                db.Shippers.Remove(ship);
+                db.SaveChanges();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Silme işlemi başarılı"
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Bir hata oluştu {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        public IHttpActionResult Put(int id, ShipperViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            if (id != model.ShipperID)
+                return BadRequest();
+
+            db.Entry(model).State = EntityState.Modified;
+
+            try
+            {
+                db.SaveChanges();
+                return Ok(new
+                {
+                    success = true,
+                    message = "Güncelleme işlemi başarılı"
+                });
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                if (!db.Categories.Any(x => x.CategoryID == id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest($"Bir hata oluştu {ex.Message}");
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }
