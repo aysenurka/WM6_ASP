@@ -3,12 +3,15 @@ using System.Web;
 using Admin.BLL.Helpers;
 using Admin.BLL.Identity;
 using Admin.Models.IdentityModels;
+using Admin.Web.UI.Controllers.WebApi.Auth;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 
 [assembly: OwinStartup(typeof(Admin.Web.UI.App_Start.Startup))]
@@ -26,8 +29,25 @@ namespace Admin.Web.UI.App_Start
                 LoginPath = new PathString("/Account")
             });
 
+            ConfigureOAuth(app);
+            app.UseCors(CorsOptions.AllowAll);
+
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             ConfigureGoogle(app);
+        }
+
+        private void ConfigureOAuth(IAppBuilder app)
+        {
+            var oAuthAuthorizationServerOptions = new OAuthAuthorizationServerOptions()
+            {
+                TokenEndpointPath = new PathString("/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(9999),
+                AllowInsecureHttp = true,
+                Provider = new Provider()
+            };
+
+            app.UseOAuthAuthorizationServer(oAuthAuthorizationServerOptions);
+            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
 
         private void ConfigureGoogle(IAppBuilder app)
