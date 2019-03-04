@@ -7,52 +7,65 @@
     <script src="assets/js/core/jquery.min.js"></script>
 </head>
 <body>
-<div id="login">
-    <input type="text" placeholder="username" id="txtusername" /><br />
-    <input type="password" id="txtpassword" placeholder="txtpassword" />
-    <br />
-    <input type="button" value="Login" id="btnlogin" />
-</div>
-<div id="info">
-    Hoşgeldin <label id="lblinfo"></label>
-    <img src="#" width="250" height="250" id="imguser" />
-</div>
+    <div id="login">
+        <input type="text" placeholder="username" id="txtusername" /><br />
+        <input type="password" id="txtpassword" placeholder="txtpassword" />
+        <br />
+        <input type="button" value="Login" id="btnlogin" />
+    </div>
+    <div id="info">
+        Hoşgeldin <label id="lblinfo"></label>
+        <img src="#" width="250" height="250" id="imguser" />
+        <input type="buttond" id="btnlogout" value="Logout" />
+    </div>
 
-<script>
-    $(function() {
-        $("#btnlogin").click(function() {
-            $.ajax({
-                url: "https://localhost:44349/token",
-                method: "POST",
-                data: "username=" +
-                    $('#txtusername').val() +
-                    "&password=" +
-                    $('#txtpassword').val() +
-                    "&grant_type=password"
-            }).done(function(res) {
-                console.log(res);
-                localStorage.setItem("token", res.access_token);
+    <script>
+        $(function () {
+            $("#btnlogin").click(function () {
+                $.ajax({
+                    url: "https://localhost:44349/token",
+                    method: "POST",
+                    data: "username=" +
+                        $('#txtusername').val() +
+                        "&password=" +
+                        $('#txtpassword').val() +
+                        "&grant_type=password"
+                }).done(function (res) {
+                    console.log(res);
+                    localStorage.setItem("token", res.access_token);
+                });
             });
+
+            function init() {
+                $.ajax({
+                    url: "https://localhost:44349/api/account/getlogininfo",
+                    method: "GET",
+                    headers: {
+                        "authorization": "Bearer " + localStorage.getItem("token"),
+                        "content-type": "application/json"
+                    }
+                }).done(function (res) {
+                    console.log(res);
+                    if (res.success) {
+                        $("#login").hide();
+                        $("#info").show();
+
+                        $("#lblinfo").html(res.Name + " " + res.Surname);
+                        $("#imguser").attr("src", "https://localhost:44349" + res.AvatarPath);
+                    } else {
+                        $("#login").show();
+                        $("#info").hide();
+                    }
+                });
+            };
+
+            $("#btnlogout").click(function() {
+                localStorage.removeItem("token");
+                init();
+            });
+
+            init();
         });
-
-        function init() {
-            $.ajax({
-                url: "https://localhost:44349/api/account/getlogininfo",
-                method: "GET",
-                headers: {
-                    "authorization": "Bearer " + localStorage.getItem("token"),
-                    "content-type": "application/json",
-                }
-            }).done(function(res) {
-                console.log(res);
-                $("#lblinfo").html(res.Name + " " + res.Surname);
-                $("#imguser").attr("src", "https://localhost:44349" + res.AvatarPath);
-            });
-        };
-            
-
-        init();
-    });
-</script>
+    </script>
 </body>
 </html>
