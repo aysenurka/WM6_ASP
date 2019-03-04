@@ -249,11 +249,11 @@ app.controller("ShipperCtrl", function ($scope, $http) {
 	$scope.guncelle = function (shipper) {
 		$scope.istekVarmi = true;
 		$scope.guncelleMi = true;
-		$scope.http({
+		$http({
 			method: 'PUT',
 			url: "api/shipper/put/" + shipper.ShipperID,
 			data: shipper
-		}).then(function rs(response) {
+		}).then(function (response) {
 			$scope.istekVarmi = false;
 			if (response.data.success) {
 				alert(response.data.message);
@@ -263,7 +263,7 @@ app.controller("ShipperCtrl", function ($scope, $http) {
 				alert("bir hata oluştu " + response.data.message);
 			}
 			}),
-			function re(response) {
+			function (response) {
 				$scope.istekVarmi = false;
 				console.log(response.data.message);
 				alert(response.data.message);
