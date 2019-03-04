@@ -227,10 +227,10 @@ app.controller("ShipperCtrl", function ($scope, $http) {
 
 	$scope.sil = function (id) {
 		$scope.istekVarmi = true;
-		$scope.http({
+		$http({
 			method: 'DELETE',
 			url: host + "api/shipper/delete/" + id
-		}).then(function rs(response) {
+		}).then(function (response) {
 			$scope.istekVarmi = false;
 			if (response.data.success) {
 				alert(response.data.message);
