@@ -33,7 +33,49 @@ app.controller("customerCtrl", function ($scope, $http) {
 	function loadGrid() {
 		$scope.dataGridOptions = {
 			dataSource: $scope.data,
-			columns: ["Name", "Surname", "Phone", "Address", "Balance"],
+			selection: {
+				mode: "multiple"
+			},
+			onSelectionChanged: function (selected) {
+				$scope.selected = selected.selectedRowsData;
+			},
+			"export": {
+				enabled: true,
+				fileName: "Customers_" + parseInt(Math.random() * 100000),
+				allowExportSelectedData: true
+			},
+			columnChooser: {
+				enabled: true,
+				allowSearch: true
+			},
+			groupPanel: {
+				visible: true
+			},
+			filterRow: {
+				visible: true
+			},
+			headerFilter: {
+				visible: true
+			},
+			columns: [{
+				dataField: "Id",
+				caption: "Customer No",
+				visible: false
+			},
+			{
+				dataField: "Name",
+				groupIndex: 0
+			}, "Surname", "Phone",
+			{
+				dataField: "Address",
+				allowHeaderFiltering: false
+			},
+			{
+				dataField: "Balance",
+				caption: "Balance",
+				dataType: "number",
+				format: "#,##0.## ₺"
+			}],
 			showBorders: true,
 			paging: {
 				pageSize: 10
@@ -48,6 +90,25 @@ app.controller("customerCtrl", function ($scope, $http) {
 				visible: true,
 				width: 240,
 				placeholder: "Ara..."
+			},
+			summary: {
+				totalItems: [{
+					column: "Balance",
+					summaryType: "sum",
+					valueFormat: "#,##0.## ₺"
+				}],
+				groupItems: [{
+					column: "Name",
+					summaryType: "count",
+					displayFormat: "Total: {0}"
+				},
+				{
+					column: "Balance",
+					summaryType: "avg",
+					displayFormat: "Average: {0}",
+					alignByColumn: true,
+					valueFormat: "#,##0.## ₺"
+				}]
 			}
 		}
 	}
