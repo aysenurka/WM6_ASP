@@ -19,20 +19,39 @@ app.controller("testCtrl", function ($scope) {
 app.controller("customerCtrl", function ($scope, $http) {
 	$scope.data = null;
 	function init() {
-		$http({
-			url: host + 'api/customer/getall',
-			method: 'GET'
-		}).then(function (ev) {
-			if (ev.data.success) {
-				$scope.data = ev.data.data;
-				loadGrid();
-			}
-		});
+		//$http({
+		//	url: host + 'api/customer/getall',
+		//	method: 'GET'
+		//}).then(function (ev) {
+		//	if (ev.data.success) {
+		//		$scope.data = ev.data.data;
+		//		loadGrid();
+		//	}
+		//});
+
+		loadGrid();
 	}
 
 	function loadGrid() {
 		$scope.dataGridOptions = {
-			dataSource: $scope.data,
+			//dataSource: $scope.data,
+			keyExpr: "Id",
+			dataSource: {
+				store: {
+					type: "odata",
+					url: '/odata/CustomerOdata',
+					key: ["Id"],
+					keyType: {
+						Id: "Int32"
+					}
+				}
+			},
+			editing: {
+				mode: "row",
+				allowUpdating: true,
+				allowDeleting: true,
+				allowAdding: true
+			},
 			selection: {
 				mode: "multiple"
 			},
@@ -92,23 +111,23 @@ app.controller("customerCtrl", function ($scope, $http) {
 				placeholder: "Ara..."
 			},
 			summary: {
-				totalItems: [{
-					column: "Balance",
-					summaryType: "sum",
-					valueFormat: "#,##0.## ₺"
-				}],
-				groupItems: [{
-					column: "Name",
-					summaryType: "count",
-					displayFormat: "Total: {0}"
-				},
-				{
-					column: "Balance",
-					summaryType: "avg",
-					displayFormat: "Average: {0}",
-					alignByColumn: true,
-					valueFormat: "#,##0.## ₺"
-				}]
+				//totalItems: [{
+				//	column: "Balance",
+				//	summaryType: "sum",
+				//	valueFormat: "#,##0.## ₺"
+				//}],
+				//groupItems: [{
+				//	column: "Name",
+				//	summaryType: "count",
+				//	displayFormat: "Total: {0}"
+				//},
+				//{
+				//	column: "Balance",
+				//	summaryType: "avg",
+				//	displayFormat: "Average: {0}",
+				//	alignByColumn: true,
+				//	valueFormat: "#,##0.## ₺"
+				//}]
 			}
 		}
 	}
