@@ -104,7 +104,6 @@ app.controller("customerCtrl", function ($scope, $http) {
 				allowedPageSizes: [5, 10, 25],
 				showInfo: true
 			},
-			showBorders: true,
 			searchPanel: {
 				visible: true,
 				width: 240,
