@@ -39,8 +39,8 @@ app.controller("customerCtrl", function ($scope, $http) {
 			dataSource: {
 				store: {
 					type: "odata",
-					url: '/odata/CustomerOdata',
-					key: ["Id"],
+					url: host + '/odata/CustomerOdata',
+					key: "Id",
 					keyType: {
 						Id: "Int32"
 					}
