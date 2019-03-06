@@ -9,7 +9,7 @@ namespace Rabbit.Web.Mvc.Models
         private readonly RabbitMqService _rabbitMqService;
         private const string DefaultQueue = "wissen1";
 
-        public Publisher(string mesage, string queueName)
+        public Publisher(string message, string queueName = null)
         {
             if (string.IsNullOrEmpty(queueName))
                 queueName = DefaultQueue;
@@ -20,7 +20,7 @@ namespace Rabbit.Web.Mvc.Models
                 using (var channel = connection.CreateModel())
                 {
                     channel.QueueDeclare(queueName, false, false, false, null);
-                    channel.BasicPublish(string.Empty, queueName, null, Encoding.UTF8.GetBytes(mesage));
+                    channel.BasicPublish(string.Empty, queueName, null, Encoding.UTF8.GetBytes(message));
                 }
             }
         }
