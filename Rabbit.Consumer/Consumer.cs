@@ -5,6 +5,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Collections.Generic;
 using System.Text;
+using Rabbit.BLL.Repository;
 
 namespace Rabbit.Consumer
 {
@@ -12,6 +13,7 @@ namespace Rabbit.Consumer
     {
         private readonly RabbitMqService _rabbitMqService;
         public EventingBasicConsumer ConsumerEvent;
+        public Form1 Form { get; set; }
 
         public Consumer(string queueName)
         {
@@ -26,13 +28,44 @@ namespace Rabbit.Consumer
                 var message = Encoding.UTF8.GetString(body);
                 if (queueName == "MailLog")
                 {
-                    var data = JsonConvert.DeserializeObject<List<MailLog>>(message);
+                    var data = JsonConvert.DeserializeObject<MailLog>(message);
+                    new MailLogRepo().Insert(new MailLog()
+                    {
+                        Id = data.Id,
+                        CustomerId = data.CustomerId,
+                        Message = data.Message,
+                        Subject = data.Subject
+                    });
+                    Form1.logMailLog++;
+                    Form.Text = $"Customer {Form1.logCustomer} - MailLog {Form1.logMailLog}";
                 }
                 else if (queueName == "Customer")
                 {
                     var data = JsonConvert.DeserializeObject<List<Customer>>(message);
+                    var repo = new CustomerRepo();
+                    for (var i = 0; i < data.Count; i++)
+                    {
+                        var item = data[i];
+                        Form1.logCustomer++;
+                        Form.Text = $"Customer {Form1.logCustomer} - MailLog {Form1.logMailLog}";
+                        repo.InsertForMark(new Customer()
+                        {
+                            Address = item.Address,
+                            Email = item.Email,
+                            Id = item.Id,
+                            Name = item.Name,
+                            Phone = item.Phone,
+                            Surname = item.Surname,
+                            RegisterDate = item.RegisterDate
+                        });
+                        if (i % 100 == 0)
+                            repo.Save();
+                    }
+
+                    repo.Save();
                 }
             };
+
             channel.BasicConsume(queueName, true, ConsumerEvent);
         }
     }
